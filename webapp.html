@@ -87,9 +87,9 @@
     <div class="container">
         <h1>Pay Stars</h1>
         <ul class="links">
-            <li><a href="https://t.me/desysx" target="_blank" data-haptic="warning">Contact admin</a></li>
-            <li><a href="https://t.me/psfeedbackbot" target="_blank" data-haptic="warning">Feedback</a></li>
-            <li><a href="https://t.me/paystars_channel" target="_blank" data-haptic="warning">Our channel</a></li>
+            <li><a href="https://t.me/desysx" target="_blank" data-haptic="warning">Contact Admin</a></li>
+            <li><a href="https://t.me/PSFeedbackBot" target="_blank" data-haptic="warning">Feedback</a></li>
+            <li><a href="https://t.me/PayStars_channel" target="_blank" data-haptic="warning">Pay Stars channel</a></li>
             <li><a href="https://t.me/telelakel" target="_blank" data-haptic="warning">Channel about Telegram</a></li>
             <li><a href="https://t.me/$m4lmnf_wOUhADAAA53x2unFDh2U" target="_blank" data-haptic="warning">Make a test payment</a></li>
             <li>
@@ -98,8 +98,14 @@
                     <span class="status-feedback"></span>
                 </a>
             </li>
+            <li>
+                <a href="javascript:;" onclick="PayStarsApp.showScanQrPopup(true);" data-haptic="warning">
+                    Scan QR Code
+                    <span class="status-feedback"></span>
+                </a>
+            </li>
         </ul>
-        <div class="tg-logo">Here is some information</div>
+        <div class="tg-logo">PS App</div>
     </div>
 
     <script>
@@ -107,44 +113,44 @@
         const PayStarsApp = {
             initDone: false,
             webApp: null,
-            
+
             // Initialize Telegram WebApp
             init: function() {
                 if (this.initDone) return true;
-                
+
                 if (window.Telegram && window.Telegram.WebApp) {
                     this.webApp = Telegram.WebApp;
                     this.webApp.ready();
                     this.webApp.expand();
                     this.initDone = true;
-                    
+
                     console.log('Telegram WebApp initialized');
                     return true;
                 }
-                
+
                 console.error('Telegram WebApp not available');
                 return false;
             },
-            
+
             // Set emoji status permanently
             setEmojiStatus: function(element, emojiId) {
                 const feedbackEl = element.querySelector('.status-feedback');
-                
+
                 // Initialize WebApp if not done yet
                 if (!this.init()) {
                     this.showFeedback(feedbackEl, '❌ WebApp not available', 3000);
                     return;
                 }
-                
+
                 // Check if feature is supported
                 if (!this.webApp.isVersionAtLeast('8.0')) {
                     this.showFeedback(feedbackEl, '⚠️ Update Telegram app', 3000);
                     return;
                 }
-                
+
                 // Add haptic feedback
                 this.webApp.HapticFeedback.impactOccurred('light');
-                
+
                 try {
                     // Set emoji status with no expiration (permanent)
                     this.webApp.setEmojiStatus(emojiId, null, (success) => {
@@ -156,32 +162,74 @@
                             this.webApp.HapticFeedback.notificationOccurred('error');
                         }
                     });
-                    
+
                     // Optional: Listen for emoji status events
                     this.webApp.onEvent('emojiStatusSet', () => {
                         this.showFeedback(feedbackEl, '✅ Confirmed!', 2000);
                     });
-                    
+
                     this.webApp.onEvent('emojiStatusFailed', () => {
                         this.showFeedback(feedbackEl, '❌ Failed', 3000);
                     });
-                    
+
                 } catch (error) {
                     console.error('Error setting emoji status:', error);
                     this.showFeedback(feedbackEl, '⚠️ Error', 3000);
                 }
             },
-            
+
+            // Show QR code scanner popup
+            showScanQrPopup: function(linksOnly) {
+                const feedbackEl = document.querySelector('.links li:last-child .status-feedback');
+
+                // Initialize WebApp if not done yet
+                if (!this.init()) {
+                    this.showFeedback(feedbackEl, '❌ WebApp not available', 3000);
+                    return;
+                }
+
+                // Check if feature is supported
+                if (!this.webApp.isVersionAtLeast('6.7')) {
+                    this.showFeedback(feedbackEl, '⚠️ Update Telegram app', 3000);
+                    return;
+                }
+
+                // Add haptic feedback
+                this.webApp.HapticFeedback.impactOccurred('light');
+
+                try {
+                    // Show QR code scanner popup
+                    this.webApp.showScanQrPopup({ text: linksOnly ? 'Scan a QR code with a link' : 'Scan any QR code' }, (result) => {
+                        if (result) {
+                            this.showFeedback(feedbackEl, `✅ Scanned: ${result}`, 5000);
+                            this.webApp.HapticFeedback.notificationOccurred('success');
+
+                            // Optionally open the link if it's a URL
+                            if (linksOnly && result.startsWith('http')) {
+                                this.webApp.openLink(result);
+                            }
+                        } else {
+                            this.showFeedback(feedbackEl, '❌ Scan cancelled', 3000);
+                            this.webApp.HapticFeedback.notificationOccurred('error');
+                        }
+                    });
+
+                } catch (error) {
+                    console.error('Error scanning QR code:', error);
+                    this.showFeedback(feedbackEl, '⚠️ Error', 3000);
+                }
+            },
+
             // Show feedback message
             showFeedback: function(element, message, duration) {
                 if (!element) return;
-                
+
                 element.textContent = message;
                 setTimeout(() => {
                     element.textContent = '';
                 }, duration);
             },
-            
+
             // Add haptic feedback to links
             setupHapticFeedback: function() {
                 document.querySelectorAll('[data-haptic]').forEach(el => {
@@ -193,12 +241,12 @@
                 });
             }
         };
-        
+
         // Initialize the app when page loads
         document.addEventListener('DOMContentLoaded', () => {
             PayStarsApp.init();
             PayStarsApp.setupHapticFeedback();
-            
+
             // Apply Telegram theme colors
             if (PayStarsApp.webApp) {
                 document.body.style.setProperty('--tg-theme-bg-color', PayStarsApp.webApp.themeParams.bg_color);
