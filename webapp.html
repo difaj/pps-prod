@@ -12,24 +12,24 @@
             font-family: Arial, sans-serif;
             background-color: var(--tg-theme-bg-color, #121212);
             color: var(--tg-theme-text-color, #ffffff);
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
+            display: flex;
             flex-direction: column;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         .container {
             text-align: center;
             animation: fadeIn 1s ease-in-out;
             width: 100%;
             max-width: 500px;
-            padding: 20px;
+            margin: 0 auto;
+            padding: 40px 20px;
             box-sizing: border-box;
+            flex-grow: 1;
         }
         h1 {
             font-size: 2rem;
-            margin-bottom: 25px;
-            animation: slideIn 1s ease-in-out;
+            margin-bottom: 50px;
             color: var(--tg-theme-button-color, #bb86fc);
         }
         .links {
@@ -37,8 +37,14 @@
             flex-direction: column;
             gap: 15px;
             list-style: none;
+            margin: 0 auto;
             padding: 0;
-            margin: 0;
+            width: 100%;
+            max-width: 400px;
+        }
+        .links li {
+            display: flex;
+            justify-content: center;
         }
         .links li a {
             color: var(--tg-theme-button-color, #bb86fc);
@@ -51,8 +57,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            animation: fadeInUp 1s ease-in-out;
             background-color: var(--tg-theme-secondary-bg-color, rgba(0,0,0,0.2));
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            box-sizing: border-box;
         }
         .links li a:hover {
             background-color: var(--tg-theme-button-color, #bb86fc);
@@ -61,19 +70,6 @@
         .status-feedback {
             margin-left: 8px;
             font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideIn {
-            from { transform: translateY(-30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes fadeInUp {
-            from { transform: translateY(15px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
         }
         .tg-logo {
             margin-top: 30px;
@@ -81,25 +77,48 @@
             font-size: 0.8rem;
             color: var(--tg-theme-hint-color, #aaaaaa);
         }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        /* Стили для світлої теми */
+        body.light-theme {
+            --tg-theme-bg-color: #ffffff;
+            --tg-theme-text-color: #000000;
+            --tg-theme-button-color: #6200ea;
+            --tg-theme-button-text-color: #ffffff;
+            --tg-theme-secondary-bg-color: rgba(0, 0, 0, 0.05);
+            --tg-theme-hint-color: #666666;
+        }
+        body.light-theme .links li a {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        body.light-theme .links li a:hover {
+            background-color: var(--tg-theme-button-color);
+            color: var(--tg-theme-button-text-color);
+        }
+        body.light-theme .tg-logo {
+            color: var(--tg-theme-hint-color);
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Pay Stars</h1>
         <ul class="links">
-            <li><a href="https://t.me/desysx" target="_blank" data-haptic="warning">Contact Admin</a></li>
-            <li><a href="https://t.me/PSFeedbackBot" target="_blank" data-haptic="warning">Feedback</a></li>
-            <li><a href="https://t.me/PayStars_channel" target="_blank" data-haptic="warning">Pay Stars channel</a></li>
-            <li><a href="https://t.me/telelakel" target="_blank" data-haptic="warning">Channel about Telegram</a></li>
-            <li><a href="https://t.me/$m4lmnf_wOUhADAAA53x2unFDh2U" target="_blank" data-haptic="warning">Make a test payment</a></li>
+            <li><a href="javascript:;" onclick="PayStarsApp.openLink('https://t.me/desysx')" data-haptic="warning" oncontextmenu="return false;">Contact Admin</a></li>
+            <li><a href="javascript:;" onclick="PayStarsApp.openLink('https://t.me/PSFeedbackBot')" data-haptic="warning" oncontextmenu="return false;">Feedback</a></li>
+            <li><a href="javascript:;" onclick="PayStarsApp.openLink('https://t.me/PayStars_channel')" data-haptic="warning" oncontextmenu="return false;">Pay Stars channel</a></li>
+            <li><a href="javascript:;" onclick="PayStarsApp.openLink('https://t.me/telelakel')" data-haptic="warning" oncontextmenu="return false;">Channel about Telegram</a></li>
+            <li><a href="javascript:;" onclick="PayStarsApp.openLink('https://t.me/$m4lmnf_wOUhADAAA53x2unFDh2U')" data-haptic="warning" oncontextmenu="return false;">Make a test payment</a></li>
             <li>
-                <a href="#" onclick="PayStarsApp.setEmojiStatus(this, '5194973342074954808');" data-haptic="warning">
+                <a href="javascript:;" onclick="PayStarsApp.setEmojiStatus(this, '5194973342074954808');" data-haptic="warning" oncontextmenu="return false;">
                     Set Emoji Status
                     <span class="status-feedback"></span>
                 </a>
             </li>
             <li>
-                <a href="javascript:;" onclick="PayStarsApp.showScanQrPopup(true);" data-haptic="warning">
+                <a href="javascript:;" onclick="PayStarsApp.showScanQrPopup(true);" data-haptic="warning" oncontextmenu="return false;">
                     Scan QR Code
                     <span class="status-feedback"></span>
                 </a>
@@ -117,42 +136,55 @@
             // Initialize Telegram WebApp
             init: function() {
                 if (this.initDone) return true;
-
                 if (window.Telegram && window.Telegram.WebApp) {
                     this.webApp = Telegram.WebApp;
                     this.webApp.ready();
                     this.webApp.expand();
                     this.initDone = true;
 
+                    // Отримати userId
+                    const user = this.webApp.initDataUnsafe?.user;
+                    if (user) {
+                        console.log('User ID:', user.id);
+                    }
+
+                    // Очистити параметри URL
+                    if (window.location.search) {
+                        history.replaceState({}, '', window.location.pathname);
+                    }
+
                     console.log('Telegram WebApp initialized');
                     return true;
                 }
-
                 console.error('Telegram WebApp not available');
                 return false;
+            },
+
+            // Відкрити посилання через Telegram WebApp
+            openLink: function(url) {
+                if (!this.init()) return;
+                this.webApp.HapticFeedback.impactOccurred('light');
+                try {
+                    this.webApp.openLink(url);
+                } catch (error) {
+                    console.error('Error opening link:', error);
+                    window.location.href = url; // Резервне перенаправлення
+                }
             },
 
             // Set emoji status permanently
             setEmojiStatus: function(element, emojiId) {
                 const feedbackEl = element.querySelector('.status-feedback');
-
-                // Initialize WebApp if not done yet
                 if (!this.init()) {
                     this.showFeedback(feedbackEl, '❌ WebApp not available', 3000);
                     return;
                 }
-
-                // Check if feature is supported
                 if (!this.webApp.isVersionAtLeast('8.0')) {
                     this.showFeedback(feedbackEl, '⚠️ Update Telegram app', 3000);
                     return;
                 }
-
-                // Add haptic feedback
                 this.webApp.HapticFeedback.impactOccurred('light');
-
                 try {
-                    // Set emoji status with no expiration (permanent)
                     this.webApp.setEmojiStatus(emojiId, null, (success) => {
                         if (success) {
                             this.showFeedback(feedbackEl, '✅ Status set!', 2000);
@@ -162,16 +194,12 @@
                             this.webApp.HapticFeedback.notificationOccurred('error');
                         }
                     });
-
-                    // Optional: Listen for emoji status events
                     this.webApp.onEvent('emojiStatusSet', () => {
                         this.showFeedback(feedbackEl, '✅ Confirmed!', 2000);
                     });
-
                     this.webApp.onEvent('emojiStatusFailed', () => {
                         this.showFeedback(feedbackEl, '❌ Failed', 3000);
                     });
-
                 } catch (error) {
                     console.error('Error setting emoji status:', error);
                     this.showFeedback(feedbackEl, '⚠️ Error', 3000);
@@ -181,30 +209,20 @@
             // Show QR code scanner popup
             showScanQrPopup: function(linksOnly) {
                 const feedbackEl = document.querySelector('.links li:last-child .status-feedback');
-
-                // Initialize WebApp if not done yet
                 if (!this.init()) {
                     this.showFeedback(feedbackEl, '❌ WebApp not available', 3000);
                     return;
                 }
-
-                // Check if feature is supported
                 if (!this.webApp.isVersionAtLeast('6.7')) {
                     this.showFeedback(feedbackEl, '⚠️ Update Telegram app', 3000);
                     return;
                 }
-
-                // Add haptic feedback
                 this.webApp.HapticFeedback.impactOccurred('light');
-
                 try {
-                    // Show QR code scanner popup
                     this.webApp.showScanQrPopup({ text: linksOnly ? 'Scan a QR code with a link' : 'Scan any QR code' }, (result) => {
                         if (result) {
                             this.showFeedback(feedbackEl, `✅ Scanned: ${result}`, 5000);
                             this.webApp.HapticFeedback.notificationOccurred('success');
-
-                            // Optionally open the link if it's a URL
                             if (linksOnly && result.startsWith('http')) {
                                 this.webApp.openLink(result);
                             }
@@ -213,7 +231,6 @@
                             this.webApp.HapticFeedback.notificationOccurred('error');
                         }
                     });
-
                 } catch (error) {
                     console.error('Error scanning QR code:', error);
                     this.showFeedback(feedbackEl, '⚠️ Error', 3000);
@@ -223,10 +240,11 @@
             // Show feedback message
             showFeedback: function(element, message, duration) {
                 if (!element) return;
-
                 element.textContent = message;
+                element.style.display = 'block';
                 setTimeout(() => {
                     element.textContent = '';
+                    element.style.display = 'none';
                 }, duration);
             },
 
@@ -239,6 +257,15 @@
                         }
                     });
                 });
+            },
+
+            // Setup context menu prevention for links
+            setupButtonContextMenuPrevention: function() {
+                document.querySelectorAll('.links a').forEach(link => {
+                    link.addEventListener('contextmenu', (e) => {
+                        e.preventDefault();
+                    });
+                });
             }
         };
 
@@ -246,15 +273,18 @@
         document.addEventListener('DOMContentLoaded', () => {
             PayStarsApp.init();
             PayStarsApp.setupHapticFeedback();
+            PayStarsApp.setupButtonContextMenuPrevention();
 
-            // Apply Telegram theme colors
-            if (PayStarsApp.webApp) {
-                document.body.style.setProperty('--tg-theme-bg-color', PayStarsApp.webApp.themeParams.bg_color);
-                document.body.style.setProperty('--tg-theme-text-color', PayStarsApp.webApp.themeParams.text_color);
-                document.body.style.setProperty('--tg-theme-button-color', PayStarsApp.webApp.themeParams.button_color);
-                document.body.style.setProperty('--tg-theme-button-text-color', PayStarsApp.webApp.themeParams.button_text_color);
-                document.body.style.setProperty('--tg-theme-secondary-bg-color', PayStarsApp.webApp.themeParams.secondary_bg_color);
-                document.body.style.setProperty('--tg-theme-hint-color', PayStarsApp.webApp.themeParams.hint_color);
+            // Застосувати збережену тему
+            if (localStorage.getItem('theme') === 'light') {
+                document.body.classList.add('light-theme');
+            } else if (PayStarsApp.webApp) {
+                document.body.style.setProperty('--tg-theme-bg-color', PayStarsApp.webApp.themeParams.bg_color || '#121212');
+                document.body.style.setProperty('--tg-theme-text-color', PayStarsApp.webApp.themeParams.text_color || '#ffffff');
+                document.body.style.setProperty('--tg-theme-button-color', PayStarsApp.webApp.themeParams.button_color || '#bb86fc');
+                document.body.style.setProperty('--tg-theme-button-text-color', PayStarsApp.webApp.themeParams.button_text_color || '#ffffff');
+                document.body.style.setProperty('--tg-theme-secondary-bg-color', PayStarsApp.webApp.themeParams.secondary_bg_color || 'rgba(0,0,0,0.2)');
+                document.body.style.setProperty('--tg-theme-hint-color', PayStarsApp.webApp.themeParams.hint_color || '#aaaaaa');
             }
         });
     </script>
