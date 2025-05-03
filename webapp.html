@@ -141,7 +141,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- Main Page -->
         <div class="page active" id="main-page">
             <h1>Pay Stars</h1>
             <ul class="links">
@@ -151,7 +150,6 @@
             <div class="tg-logo">Telegram WebApp</div>
         </div>
 
-        <!-- Contact Page -->
         <div class="page" id="contact-page">
             <h1>Contact Us</h1>
             <ul class="links">
@@ -161,7 +159,6 @@
             <div class="tg-logo">Telegram WebApp</div>
         </div>
 
-        <!-- Test Page -->
         <div class="page" id="test-page">
             <h1>Test Features</h1>
             <ul class="links">
@@ -173,7 +170,6 @@
                         <span class="status-feedback"></span>
                     </button>
                 </li>
-                <!-- Нова кнопка для перемикання теми -->
                 <li>
                     <button onclick="PayStarsApp.toggleTheme()" data-haptic="warning" oncontextmenu="return false;">Toggle Theme</button>
                 </li>
@@ -182,7 +178,6 @@
         </div>
     </div>
 
-    <!-- Navigation Bar -->
     <div class="nav-bar">
         <button class="nav-link active" data-page="main-page" oncontextmenu="return false;">Main</button>
         <button class="nav-link" data-page="contact-page" oncontextmenu="return false;">Contact</button>
@@ -260,10 +255,23 @@
 
             showScanQrPopup: function(linksOnly) {
                 if (!this.init()) return;
-                if (!this.webApp.isVersionAtLeast('6.7')) return;
+                if (!this.webApp.isVersionAtLeast('6.7')) {
+                    console.error('QR scanning requires Telegram WebApp version 6.7 or higher');
+                    return;
+                }
                 this.webApp.HapticFeedback.impactOccurred('light');
                 try {
-                    this.webApp.showScanQrPopup({ text: linksOnly ? 'Scan a QR code with a link' : 'Scan any QR code' });
+                    this.webApp.showScanQrPopup(
+                        { text: linksOnly ? 'Scan a QR code with a link' : 'Scan any QR code' },
+                        (result) => {
+                            console.log('QR code scanned:', result);
+                            this.webApp.closeScanQrPopup();
+                            if (linksOnly && result.startsWith('http')) {
+                                this.openLink(result);
+                            }
+                            return true;
+                        }
+                    );
                 } catch (error) {
                     console.error('Error scanning QR code:', error);
                 }
@@ -360,7 +368,6 @@
                 document.body.classList.add('light-theme');
                 PayStarsApp.toggleTheme();
             } else {
-                
                 if (PayStarsApp.webApp) {
                     document.body.style.setProperty('--tg-theme-bg-color', PayStarsApp.webApp.themeParams.bg_color);
                     document.body.style.setProperty('--tg-theme-text-color', PayStarsApp.webApp.themeParams.text_color);
