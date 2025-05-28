@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Pay Stars</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -286,14 +286,21 @@
             max-width: 90%;
             max-height: 90%;
             overflow-y: auto;
+            position: relative;
         }
         .close-btn {
             position: absolute;
             top: 10px;
-            right: 15px;
+            right: 10px;
             font-size: 1.5rem;
             cursor: pointer;
             color: var(--tg-theme-text-color, #ffffff);
+            line-height: 1;
+            padding: 5px;
+            z-index: 1001;
+        }
+        .close-btn:hover {
+            opacity: 0.7;
         }
         .no-image-message {
             font-size: 1rem;
@@ -359,6 +366,9 @@
         }
         body.light-theme .modal-content {
             background-color: #ffffff;
+        }
+        body.light-theme .close-btn {
+            color: var(--tg-theme-text-color, #000000);
         }
     </style>
 </head>
