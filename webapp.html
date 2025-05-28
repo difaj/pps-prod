@@ -281,7 +281,7 @@
         }
         .modal-content {
             background-color: var(--tg-theme-bg-color, #121212);
-            padding: 20px;
+            padding: 40px 20px 20px 20px; /* Додаємо більший верхній відступ для хрестика */
             border-radius: 10px;
             max-width: 90%;
             max-height: 90%;
@@ -296,8 +296,16 @@
             cursor: pointer;
             color: var(--tg-theme-text-color, #ffffff);
             line-height: 1;
-            padding: 5px;
+            padding: 8px;
+            background-color: var(--tg-theme-secondary-bg-color, rgba(0,0,0,0.2));
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             z-index: 1001;
+            transition: opacity 0.2s ease;
         }
         .close-btn:hover {
             opacity: 0.7;
@@ -369,6 +377,7 @@
         }
         body.light-theme .close-btn {
             color: var(--tg-theme-text-color, #000000);
+            background-color: var(--tg-theme-secondary-bg-color, rgba(0,0,0,0.05));
         }
     </style>
 </head>
