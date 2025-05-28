@@ -281,7 +281,7 @@
         }
         .modal-content {
             background-color: var(--tg-theme-bg-color, #121212);
-            padding: 40px 20px 20px 20px; /* Додаємо більший верхній відступ для хрестика */
+            padding: 40px 20px 20px 20px;
             border-radius: 10px;
             max-width: 90%;
             max-height: 90%;
@@ -483,10 +483,9 @@
 
     <div class="nav-bar">
         <button class="nav-link active" data-page="main-page" oncontextmenu="return false;">Main</button>
-        <button class="nav-link" data-page="contact-page" oncontextmenu="return false;">Contact</button>
-        <button class="nav-link" data-page="scan-history-page" oncontextmenu="return false;">History</button>
         <button class="nav-link" data-page="nft-search-page" oncontextmenu="return false;">NFT</button>
         <button class="nav-link" onclick="PayStarsApp.showScanQrPopup(true);" data-haptic="warning" oncontextmenu="return false;">QR Scan</button>
+        <button class="nav-link" data-page="scan-history-page" oncontextmenu="return false;">History</button>
         <button class="nav-link" data-page="test-page" oncontextmenu="return false;">Test</button>
     </div>
 
@@ -1035,15 +1034,15 @@
                 const theme = isLight ? 'light' : 'dark';
                 this.webApp.HapticFeedback.impactOccurred('light');
 
-                document.body.style.setProperty('--tg-theme-bg-color', isLight ? '#ffffff' : this.webApp.themeParams.bg_color || '#121212');
-                document.body.style.setProperty('--tg-theme-text-color', isLight ? '#000000' : this.webApp.themeParams.text_color || '#ffffff');
-                document.body.style.setProperty('--tg-theme-button-color', isLight ? '#6200ea' : this.webApp.themeParams.button_color || '#bb86fc');
-                document.body.style.setProperty('--tg-theme-button-text-color', isLight ? '#ffffff' : this.webApp.themeParams.button_text_color || '#ffffff');
-                document.body.style.setProperty('--tg-theme-secondary-bg-color', isLight ? 'rgba(0, 0, 0, 0.05)' : this.webApp.themeParams.secondary_bg_color || 'rgba(0,0,0,0.2)');
-                document.body.style.setProperty('--tg-theme-hint-color', isLight ? '#666666' : this.webApp.themeParams.hint_color || '#aaaaaa');
+                document.body.style.setProperty('--tg-theme-bg-color', isLight ? '#ffffff' : '');
+                document.body.style.setProperty('--tg-theme-text-color', isLight ? '#000000' : '');
+                document.body.style.setProperty('--tg-theme-button-color', isLight ? '#6200ea' : '');
+                document.body.style.setProperty('--tg-theme-button-text-color', isLight ? '#ffffff' : '');
+                document.body.style.setProperty('--tg-theme-secondary-bg-color', isLight ? 'rgba(0, 0, 0, 0.05)' : '');
+                document.body.style.setProperty('--tg-theme-hint-color', isLight ? '#666666' : '');
 
                 if (this.userId) {
-                    this.webApp.DeviceStorage.setItem(`theme_${this.userId}`, theme, (error, success) => {
+                    this.webApp.DeviceStorage.setItem(`theme${this.userId}`, theme, (error, success) => {
                         if (error) {
                             console.error('Error saving theme:', error);
                         } else if (success) {
